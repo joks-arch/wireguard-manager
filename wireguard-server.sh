@@ -764,7 +764,6 @@ if [ ! -f "$WG_CONFIG" ]; then
       rm -f /etc/unbound/unbound.conf
       # Set Config for unbound
       echo "server:
-    num-threads: 4
     verbosity: 1
     root-hints: /etc/unbound/root.hints
     # auto-trust-anchor-file: /var/lib/unbound/root.key
@@ -802,6 +801,9 @@ if [ ! -f "$WG_CONFIG" ]; then
       echo "nameserver ::1" >>/etc/resolv.conf
       # Stop the modification of the file
       chattr +i /etc/resolv.conf
+     # checking number of threads for unbound
+     NPROC=$(nproc)
+     echo num-threads: $NPROC >> /etc/unbound/unbound.conf
     fi
     if pgrep systemd-journal; then
       systemctl enable unbound
